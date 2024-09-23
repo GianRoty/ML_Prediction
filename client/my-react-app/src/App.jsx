@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import CarList from './CarsList'
 import './App.css'
 import CarForm from './CarFrom';
 
@@ -19,6 +18,7 @@ function App() {
 
   const closeModal = () => {
     setIsModalOpen(false)
+    setcurrentCar({})
   }
 
   const openCreateModal = () => {
@@ -26,15 +26,18 @@ function App() {
       setIsModalOpen(true)
   }
 
-  const openEditModal = (car) => {
-    if (isModalOpen) return
-    setcurrentCar(car)
-    setIsModalOpen(true)
+  const onUpdate = (car) => {
+    closeModal()
+    fetchCars()
   }
 
   return (
     <>
       <h1>Machine Learning Prediction</h1>
+      <p>This application simulates a machine learning approach with data in input.</p>
+      <p>Machine Learning is making the computer learn from studying data and statistics.</p>
+      <p>Machine Learning is a step into the direction of artificial intelligence (AI).</p>
+      <p>Machine Learning is a program that analyses data and learns to predict the outcome.</p>
       <ul>
         <li><button onClick={openCreateModal}>Create new car</button></li>
         <li><button onClick={openCreateModal}>View the linear regression</button></li>
@@ -46,7 +49,7 @@ function App() {
         <div className = "modal">
           <div className = "modal-content">
             <span className = "close" onClick = {closeModal}>&times;</span>
-            <CarForm/>
+            <CarForm existingCar = {currentCar} updateCallback={onUpdate}/>
           </div>
         </div>
       }

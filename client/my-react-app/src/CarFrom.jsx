@@ -1,11 +1,11 @@
 import { useState } from "react"
 
 const CarForm = ({existingCar = {}, updateCallback}) => {
-    const [car, setCar] = useState("")
-    const [model, setModel] = useState("")
-    const [volume, setVolume] = useState("")
-    const [weight, setWeight] = useState("")
-    const [co2, setCo2] = useState("")
+    const [car, setCar] = useState(existingCar.car || "")
+    const [model, setModel] = useState(existingCar.model || "")
+    const [volume, setVolume] = useState(existingCar.volume || "")
+    const [weight, setWeight] = useState(existingCar.weight || "")
+    const [co2, setCo2] = useState(existingCar.co2 || "")
 
     const onSubmit = async (e) => {
         e.preventDefault()
@@ -38,7 +38,6 @@ const CarForm = ({existingCar = {}, updateCallback}) => {
                 <input
                     type = "text"
                     id = "car"
-                    value = {setCar}
                     onChange = {(e) => setCar(e.target.value)}
                 />
             </div>
@@ -48,7 +47,6 @@ const CarForm = ({existingCar = {}, updateCallback}) => {
                 <input
                     type = "text"
                     id = "model"
-                    value = {setModel}
                     onChange = {(e) => setModel(e.target.value)}
                 />
             </div>
@@ -58,7 +56,6 @@ const CarForm = ({existingCar = {}, updateCallback}) => {
                 <input
                     type = "number"
                     id = "volume"
-                    value = {setVolume}
                     onChange = {(e) => setVolume(e.target.value)}
                 />
             </div>
@@ -68,7 +65,6 @@ const CarForm = ({existingCar = {}, updateCallback}) => {
                 <input
                     type = "number"
                     id = "weight"
-                    value = {setWeight}
                     onChange = {(e) => setWeight(e.target.value)}
                 />
             </div>
@@ -78,11 +74,11 @@ const CarForm = ({existingCar = {}, updateCallback}) => {
                 <input
                     type = "number"
                     id = "co2"
-                    value = {setCo2}
                     onChange = {(e) => setCo2(e.target.value)}
                 />
             </div>
             <br/>
+            <button id = "insertion">Insert new car</button>
         </form>
     )
 }
