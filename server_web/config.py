@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Flask, request, jsonify
 from models import Car
@@ -33,12 +34,25 @@ def createcar():
 @app.route('/linear_regression_cars', methods=['GET'])
 def linear_regression_cars():
     directory = './database'
+    volumes = []
+    weights = []
+    co2es = []
 
     for dirpath, dirnames, filenames in os.walk(directory):
         print(f"Directory corrente: {dirpath}")
     for dirname in dirnames:
-        print(f"  Sottocartella: {dirname}")
+        print(f"Sottocartella: {dirname}")
     for filename in filenames:
-        print(f"  File: {filename}")
+        print(f"File: {filename}")
+        file = open(directory + "/" + filename, "r")
+        x = file.read()
+        data = json.loads(x)
+        volumes.append(data["volume"])
+        weights.append(data["weight"])
+        co2es.append(data["co2"])
+    
+    print(f"Volumes: {volumes}")
+    print(f"Weights: {weights}")
+    print(f"CO2: {co2es}")
     
     return jsonify({"message": "OK"})
