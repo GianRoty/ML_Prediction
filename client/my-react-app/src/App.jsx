@@ -40,10 +40,10 @@ function App() {
       <p>Machine Learning is a program that analyses data and learns to predict the outcome.</p>
       <ul>
         <li><button onClick={openCreateModal}>Create new car</button></li>
-        <li><button onClick={openCreateModal}>View the linear regression</button></li>
-        <li><button onClick={openCreateModal}>Display the Training Set</button></li>
-        <li><button onClick={openCreateModal}>Predict</button></li>
-        <li><button onClick={openCreateModal}>Show Confusion Matrix</button></li>
+        <li><button>View the linear regression</button></li>
+        <li><button>Display the Training Set</button></li>
+        <li><button>Predict</button></li>
+        <li><button>Show Confusion Matrix</button></li>
       </ul>
       {isModalOpen && 
         <div className = "modal">
