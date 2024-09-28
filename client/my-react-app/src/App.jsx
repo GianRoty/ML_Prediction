@@ -31,6 +31,21 @@ function App() {
     fetchCars()
   }
 
+  const viewLinearRegression = async () => {
+    const url = "http://127.0.0.1:5000/linear_regression_cars"
+    
+    const options = {
+      method: "GET",
+      headers: {"Content-Type": "application/json"}
+    }
+  
+    const response = await fetch(url, options)
+
+    if (response.status !== 201 && response.status !== 200) {
+      const data = await response.json()
+    }
+  }
+
   return (
     <>
       <h1>Machine Learning Prediction</h1>
@@ -39,8 +54,8 @@ function App() {
       <p>Machine Learning is a step into the direction of artificial intelligence (AI).</p>
       <p>Machine Learning is a program that analyses data and learns to predict the outcome.</p>
       <ul>
-        <li><button onClick={openCreateModal}>Create new car</button></li>
-        <li><button>View the linear regression</button></li>
+        <li><button onClick = {openCreateModal}>Create new car</button></li>
+        <li><button onClick = {viewLinearRegression}>View the linear regression</button></li>
         <li><button>Display the Training Set</button></li>
         <li><button>Predict</button></li>
         <li><button>Show Confusion Matrix</button></li>
