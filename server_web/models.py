@@ -6,12 +6,5 @@ class Car:
         self.weight = weight
         self.co2 = co2
 
-        def to_json(self):
-            return {
-                "car": self.car,
-                "model": self.model,
-                "volume": self.volume,
-                "weight": self.weight,
-                "co2": self.co2
-            }
-
+    def to_json(self):
+        return "{\"car\": \"" + self.car + "\", \"model\": \"" + self.model + "\", \"volume\": " + self.volume + ", \"weight\": " + self.weight + ", \"co2\": " + self.co2 + "}"
