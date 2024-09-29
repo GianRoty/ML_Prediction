@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 def linear_regression(x, y):
+    if (not x or not y):
+        raise Exception("Sorry, empty arrays")
+    
     slope, intercept, r, p, std_err = stats.linregress(x, y) 
 
     def intercept_function(x):

@@ -6,12 +6,14 @@ function App() {
   const [imageSrc, setImageSrc] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen_reglin, setIsModalOpen_reglin] = useState(false);
+  const [isModalOpen_training_set, setIsModalOpen_Training_set] = useState(false);
   const [currentCar, setcurrentCar] = useState([]);
 
 
   const closeModal = () => {
     setIsModalOpen(false)
     setIsModalOpen_reglin(false)
+    setIsModalOpen_Training_set(false)
     setcurrentCar({})
   }
 
@@ -42,8 +44,28 @@ function App() {
       console.log(data)
     }
 
-    console.log(response)
     setIsModalOpen_reglin(true)
+  }
+
+  const trainingSet = async () => {
+    const url = "http://127.0.0.1:5000/training_set_car"
+
+    const options = {
+      method: "GET",
+      headers: {"Content-Type": "application/json"}
+    }
+
+    const response = await fetch(url, options);
+    const imageBlob = await response.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+    setImageSrc(imageObjectURL);
+
+    if (response.status !== 201 && response.status !== 200) {
+      const data = await response.json()
+      console.log(data)
+    }
+
+    setIsModalOpen_Training_set(true)
   }
 
   return (
@@ -56,7 +78,7 @@ function App() {
       <ul>
         <li><button onClick = {openCreateModal}>Create new car</button></li>
         <li><button onClick = {viewLinearRegression}>View the linear regression</button></li>
-        <li><button>Display the Training Set</button></li>
+        <li><button onClick = {trainingSet}>Display the Training Set</button></li>
         <li><button>Predict</button></li>
         <li><button>Show Confusion Matrix</button></li>
       </ul>
@@ -69,6 +91,14 @@ function App() {
         </div>
       }
       {isModalOpen_reglin && 
+        <div className = "modal">
+          <div className = "modal-content">
+            <span className = "close" onClick = {closeModal}>&times;</span><br/>
+            {imageSrc ? <img src={imageSrc} alt="Grafico" /> : <p>Caricamento del grafico...</p>}
+          </div>
+        </div>
+      }
+      {isModalOpen_training_set && 
         <div className = "modal">
           <div className = "modal-content">
             <span className = "close" onClick = {closeModal}>&times;</span><br/>
