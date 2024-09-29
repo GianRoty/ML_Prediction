@@ -1,12 +1,20 @@
 import os
+import sys
 import json
 
-from flask import Flask, request, jsonify
+from flask import Flask, Response, request, jsonify
 from models import Car
 from flask_cors import CORS
 
+sys.path.append(os.path.join(os.path.dirname(__file__), 'utilities'))
+import linear_regression
+
 app = Flask(__name__)
 CORS(app)
+
+volumes = []
+weights = []
+co2es = []
 
 def add_cors_headers(response):
     response.headers.add('Access-Control-Allow-Origin', '*')  # Permette tutte le origini
@@ -22,21 +30,18 @@ def createcar():
     weight = request.json.get("weight")
     co2 = request.json.get("co2")
 
-    f = open("./database/" + car + ".json", "w")
-
-    new_car = Car(car, model, volume, weight, co2)
-
-    f.write(new_car.to_json())
-    f.close()
-
-    return jsonify({"message": "OK"})
+    if car:
+        f = open("./database/" + car + ".json", "w")
+        new_car = Car(car, model, volume, weight, co2)
+        f.write(new_car.to_json())
+        f.close()
+        return jsonify({"message": "OK"}), 200
+    else:
+        return jsonify({'Error': 'Nessun campo deve essere vuoto'}), 404
 
 @app.route('/linear_regression_cars', methods=['GET'])
 def linear_regression_cars():
     directory = './database'
-    volumes = []
-    weights = []
-    co2es = []
 
     for dirpath, dirnames, filenames in os.walk(directory):
         print(f"Directory corrente: {dirpath}")
@@ -54,5 +59,6 @@ def linear_regression_cars():
     print(f"Volumes: {volumes}")
     print(f"Weights: {weights}")
     print(f"CO2: {co2es}")
-    
-    return jsonify({"message": "OK"})
+
+    image = linear_regression.linear_regression(volumes, weights)
+    return Response(image, mimetype='image/png')

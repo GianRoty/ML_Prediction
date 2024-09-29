@@ -1,23 +1,17 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
 import './App.css'
 import CarForm from './CarForm';
 
 function App() {
-  const [cars, setCars] = useState([]);
+  const [imageSrc, setImageSrc] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen_reglin, setIsModalOpen_reglin] = useState(false);
   const [currentCar, setcurrentCar] = useState([]);
 
-  useEffect(() => {fetchCars()}, []);
-
-  const fetchCars = async () => {
-    const response = await fetch("http://127.0.0.1:5000/cars");
-    const data = await response.json();
-    setCars(data.cars);
-    console.log(data.cars);
-  }
 
   const closeModal = () => {
     setIsModalOpen(false)
+    setIsModalOpen_reglin(false)
     setcurrentCar({})
   }
 
@@ -28,7 +22,6 @@ function App() {
 
   const onUpdate = (car) => {
     closeModal()
-    fetchCars()
   }
 
   const viewLinearRegression = async () => {
@@ -39,11 +32,18 @@ function App() {
       headers: {"Content-Type": "application/json"}
     }
   
-    const response = await fetch(url, options)
-
+    const response = await fetch(url, options);
+    const imageBlob = await response.blob();
+    const imageObjectURL = URL.createObjectURL(imageBlob);
+    setImageSrc(imageObjectURL);
+    
     if (response.status !== 201 && response.status !== 200) {
       const data = await response.json()
+      console.log(data)
     }
+
+    console.log(response)
+    setIsModalOpen_reglin(true)
   }
 
   return (
@@ -65,6 +65,14 @@ function App() {
           <div className = "modal-content">
             <span className = "close" onClick = {closeModal}>&times;</span>
             <CarForm existingCar = {currentCar} updateCallback={onUpdate}/>
+          </div>
+        </div>
+      }
+      {isModalOpen_reglin && 
+        <div className = "modal">
+          <div className = "modal-content">
+            <span className = "close" onClick = {closeModal}>&times;</span><br/>
+            {imageSrc ? <img src={imageSrc} alt="Grafico" /> : <p>Caricamento del grafico...</p>}
           </div>
         </div>
       }
